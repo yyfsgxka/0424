@@ -52,10 +52,10 @@ int main()
         for (int a = j * blocksize; a < (j + 1)*blocksize; a++) {
 		for (int b = i * blocksize; b < (i + 1)*blocksize; b++) {
 			int angle1 = 0;//
-			float angle2 = angle.at<float>(a, b);	//像素的角度值
-			angle1 = angle2 / 45;	//角度位置
-			float mag1 = mag.at<float>(a, b);		//像素的幅度值
-			ref_his[angle1 + count * 8] += mag1;				//在数组的角度位置增加幅度值
+			float angle2 = angle.at<float>(a, b);	
+			angle1 = angle2 / 45;	
+			float mag1 = mag.at<float>(a, b);		
+			ref_his[angle1 + count * 8] += mag1;			
 		}
 	}
 	count++;//令循环开始下一个cell的操作
@@ -116,10 +116,10 @@ int main()
 			for (int a = j * blocksize; a < (j + 1)*blocksize; a++) {
 				for (int b = i * blocksize; b < (i + 1)*blocksize; b++) {
 					int angle1_img2 = 0;//
-					float angle2_img = angle.at<float>(a, b);	//像素的角度值
-					angle1_img2 = angle2_img / 45;	//角度位置
-					float mag1_img2 = mag.at<float>(a, b);		//像素的幅度值
-					ref_his[angle1_img2 + count2 * 8] += mag1_img2;				//在数组的角度位置增加幅度值
+					float angle2_img = angle.at<float>(a, b);	
+					angle1_img2 = angle2_img / 45;	
+					float mag1_img2 = mag.at<float>(a, b);		
+					ref_his[angle1_img2 + count2 * 8] += mag1_img2;				
 				}
 			}
 			count2++;//令循环开始下一个cell的操作

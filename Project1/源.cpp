@@ -44,28 +44,29 @@ int main()
 	Sobel(scrM, gy, CV_32F, 0, 1, 1);
 	//获得梯度和角度
 	cartToPolar(gx, gy, mag, angle, true);
+	
 
 	for (int j = 0; j < ny; j++) {
 		for (int i = 0; i < nx; i++) {
-			cell = mag(Rect(16 * i, 16 * j, 16, 16)).clone();
-			cell1 = angle(Rect(16 * i, 16 * j, 16, 16)).clone();
-			for (int m = 0; m < 16; m++) {
-				for (int n = 0; n < 16; n++) {
-					temp = cell1.at<float>(n, m) / 45;
-					ref_his[count * 8 + temp] = ref_his[count * 8 + temp] + cell.at<float>(n, m);
-				}
-			}
-
-			count = count + 1;
-
+			
+        for (int a = j * blocksize; a < (j + 1)*blocksize; a++) {
+		for (int b = i * blocksize; b < (i + 1)*blocksize; b++) {
+			int angle1 = 0;//
+			float angle2 = angle.at<float>(a, b);	//像素的角度值
+			angle1 = angle2 / 45;	//角度位置
+			float mag1 = mag.at<float>(a, b);		//像素的幅度值
+			ref_his[angle1 + count * 8] += mag1;				//在数组的角度位置增加幅度值
+		}
+	}
+	count++;//令循环开始下一个cell的操作
 		}
 
 	}
 
 	//第一幅图像处理
 
-	count = 0;
-	temp = 0;
+	int count1 = 0;
+	int temp1 = 0;
 
 	Mat gx1, gy1;
 	Mat mag1, angle1;
@@ -81,18 +82,16 @@ int main()
 
 	for (int j = 0; j < ny; j++) {
 		for (int i = 0; i < nx; i++) {
-			cell2 = mag1(Rect(16 * i, 16 * j, 16, 16)).clone();
-			cell3 = angle1(Rect(16 * i, 16 * j, 16, 16)).clone();
-
-			for (int m = 0; m < 16; m++) {
-				for (int n = 0; n < 16; n++) {
-					temp = cell3.at<float>(n, m) / 45;
-					his1[count * 8 + temp] = his1[count * 8 + temp] + cell2.at<float>(n, m);
+			for (int a = j * blocksize; a < (j + 1)*blocksize; a++) {
+				for (int b = i * blocksize; b < (i + 1)*blocksize; b++) {
+					int angle_img1 = 0;//
+					float angle2_img1 = angle.at<float>(a, b);	//像素的角度值
+					angle_img1= angle2_img1 / 45;	//角度位置
+					float mag2 = mag.at<float>(a, b);		//像素的幅度值
+					his1[angle_img1 + count1 * 8] += mag2;				//在数组的角度位置增加幅度值
 				}
-
 			}
-
-			count = count + 1;
+			count1++;//令循环开始下一个cell的操作
 
 		}
 
@@ -100,8 +99,8 @@ int main()
 
 	//第三幅图像处理
 
-	count = 0;
-	temp = 0;
+	int count2 = 0;
+	int temp2 = 0;
 
 	Mat gx2, gy2;
 	Mat mag2, angle2;
@@ -114,18 +113,16 @@ int main()
 
 	for (int j = 0; j < ny; j++) {
 		for (int i = 0; i < nx; i++) {
-			cell4 = mag2(Rect(16 * i, 16 * j, 16, 16)).clone();
-			cell5 = angle2(Rect(16 * i, 16 * j, 16, 16)).clone();
-			for (int m = 0; m < 16; m++) {
-				for (int n = 0; n < 16; n++) {
-					temp = cell5.at<float>(n, m) / 45;
-					his2[count * 8 + temp] = his2[count * 8 + temp] + cell4.at<float>(n, m);
+			for (int a = j * blocksize; a < (j + 1)*blocksize; a++) {
+				for (int b = i * blocksize; b < (i + 1)*blocksize; b++) {
+					int angle1_img2 = 0;//
+					float angle2_img = angle.at<float>(a, b);	//像素的角度值
+					angle1_img2 = angle2_img / 45;	//角度位置
+					float mag1_img2 = mag.at<float>(a, b);		//像素的幅度值
+					ref_his[angle1_img2 + count2 * 8] += mag1_img2;				//在数组的角度位置增加幅度值
 				}
-
 			}
-
-			count = count + 1;
-
+			count2++;//令循环开始下一个cell的操作
 		}
 
 	}
